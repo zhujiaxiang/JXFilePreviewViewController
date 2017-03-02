@@ -2,13 +2,17 @@
 //  AppDelegate.m
 //  JXFilePreviewDemo
 //
-//  Created by 朱佳翔 on 2017/3/2.
+//  Created by zjx on 2017/2/23.
 //  Copyright © 2017年 zjx. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) UINavigationController *mainNavigationController;
+@property (nonatomic, strong) UIViewController *mainViewController;
 
 @end
 
@@ -17,6 +21,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = self.mainNavigationController;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
@@ -45,6 +55,24 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Getters & Setters
+
+- (UINavigationController *)mainNavigationController
+{
+    if (!_mainNavigationController) {
+        _mainNavigationController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
+    }
+    return _mainNavigationController;
+}
+
+- (UIViewController *)mainViewController
+{
+    if (!_mainViewController) {
+        _mainViewController = [[ViewController alloc] init];
+    }
+    return _mainViewController;
 }
 
 

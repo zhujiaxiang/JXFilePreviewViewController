@@ -20,6 +20,11 @@
 		64A937711E682BEF007297AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64A9376F1E682BEF007297AA /* Main.storyboard */; };
 		64A937731E682BEF007297AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64A937721E682BEF007297AA /* Assets.xcassets */; };
 		64A937761E682BEF007297AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64A937741E682BEF007297AA /* LaunchScreen.storyboard */; };
+		64A9377B1E682E3A007297AA /* JXFilePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9374B1E6829C4007297AA /* JXFilePreviewViewController.m */; };
+		64A9377C1E682E3A007297AA /* JXFileDownloadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A937541E682B0D007297AA /* JXFileDownloadView.m */; };
+		64A9377D1E682E3A007297AA /* JXFileDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9375A1E682B63007297AA /* JXFileDownloader.m */; };
+		64A9377E1E682E3A007297AA /* JXProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A937571E682B36007297AA /* JXProgressView.m */; };
+		64A9377F1E682E3A007297AA /* JXFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9375D1E682B85007297AA /* JXFileCache.m */; };
 		F2B59E146707E8D6C3152B36 /* libPods-JXFilePreviewViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFEA0F0FF083030884F197D3 /* libPods-JXFilePreviewViewController.a */; };
 /* End PBXBuildFile section */
 
@@ -359,6 +364,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64A9377B1E682E3A007297AA /* JXFilePreviewViewController.m in Sources */,
+				64A9377C1E682E3A007297AA /* JXFileDownloadView.m in Sources */,
+				64A9377D1E682E3A007297AA /* JXFileDownloader.m in Sources */,
+				64A9377E1E682E3A007297AA /* JXProgressView.m in Sources */,
+				64A9377F1E682E3A007297AA /* JXFileCache.m in Sources */,
 				64A9376E1E682BEF007297AA /* ViewController.m in Sources */,
 				64A9376B1E682BEF007297AA /* AppDelegate.m in Sources */,
 				64A937681E682BEF007297AA /* main.m in Sources */,
@@ -553,6 +563,7 @@
 				64A9377A1E682BEF007297AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
