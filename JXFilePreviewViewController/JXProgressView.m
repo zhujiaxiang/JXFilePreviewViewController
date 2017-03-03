@@ -32,8 +32,6 @@
             view.layer.masksToBounds = YES;
             view.layer.cornerRadius = self.progressCornerRadius;
             
-            
-            
             [self.progressBackgroundView addSubview:view];
             
             view;

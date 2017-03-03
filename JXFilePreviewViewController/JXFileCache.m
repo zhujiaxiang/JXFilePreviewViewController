@@ -53,7 +53,7 @@ static NSString *const kDefaultNamespace = @"com.zjx.JXFileCache";
     if (fullNamespace) {
         dirPath = [self makeDiskCachePath:fullNamespace];
     } else {
-        [self makeDiskCachePath:[NSBundle mainBundle].bundleIdentifier];
+         dirPath = [self makeDiskCachePath:[NSBundle mainBundle].bundleIdentifier];
     }
     
     //构建缓存文件的路径
@@ -92,8 +92,6 @@ static NSString *const kDefaultNamespace = @"com.zjx.JXFileCache";
     } else {
         dirPathStr = [self makeDiskCachePath:[NSBundle mainBundle].bundleIdentifier];
     }
-    
-    NSURL *dirPath = [NSURL URLWithString:dirPathStr];
     
     if ([fm fileExistsAtPath:dirPathStr]) {
         BOOL success = [fm removeItemAtPath:dirPathStr error:nil];

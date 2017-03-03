@@ -7,6 +7,7 @@
 //
 
 #import "JXFileDownloadView.h"
+#import "JXProgressView.h"
 #import <Masonry/Masonry.h>
 
 
@@ -15,6 +16,8 @@
 - (instancetype)init
 {
     if (self = [super initWithFrame:[UIScreen mainScreen].bounds]) {
+        
+        self.backgroundColor = [UIColor whiteColor];
         
         self.extensionView = ({
             
@@ -27,9 +30,6 @@
                 make.top.mas_equalTo(self.mas_top).offset(89.0f);
                 make.size.mas_equalTo(CGSizeMake(60, 60));
             }];
-
-            view.layer.borderWidth = 2;
-            view.layer.borderColor = [UIColor redColor].CGColor;
             
             view;
         });

@@ -16,10 +16,6 @@ static NSString *const kDefaultNamespace = @"com.shenji.JXFileCache";
 @property(nonatomic, copy) JXFileDownloadCompletionBlock completedBlock;
 typedef void (^KLCheckCacheCompletionBlock)(NSURL *__nullable localFileURL);
 
-@property(nonatomic, strong) dispatch_queue_t ioQueue;
-
-
-
 @property(nonatomic, strong) NSMutableData *fileData;
 @property(nonatomic, assign) NSInteger expectedSize;
 @property(nonatomic, strong) NSURL *fileURL;
@@ -39,12 +35,23 @@ typedef void (^KLCheckCacheCompletionBlock)(NSURL *__nullable localFileURL);
     return instance;
 }
 
+dispatch_queue_t ioQueue()
+{
+    static dispatch_once_t once;
+    static dispatch_queue_t ioQueue;
+    
+    dispatch_once(&once, ^{
+        ioQueue = dispatch_queue_create("net.sheji.SJFilePreview.io", DISPATCH_QUEUE_SERIAL);
+        
+    });
+    
+    return ioQueue;
+}
+
+
 - (instancetype)init
 {
     if (self = [super init]) {
-        
-        // Create IO serial queue
-        _ioQueue = dispatch_queue_create("net.shenji.JXFilePreview.io", DISPATCH_QUEUE_SERIAL);
         self.isDownloading = NO;
     }
     return self;
@@ -107,7 +114,9 @@ didCompleteWithError:(nullable NSError *)error
 
 - (void)diskFileExistsWithWebURL:(nonnull NSURL *)webURL completed:(JXCheckCacheCompletionBlock)completedBlock
 {
-    dispatch_async(_ioQueue, ^{
+    dispatch_queue_t queue = ioQueue();
+
+    dispatch_async(queue, ^{
         
         NSURL *localFileURL = nil;
         NSString *filePath = [[JXFileCache sharedCache] defaultFileCachePathForWebURL:webURL];

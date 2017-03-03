@@ -67,6 +67,7 @@
 		64A937721E682BEF007297AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		64A937751E682BEF007297AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		64A937771E682BEF007297AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		64AA0DEF1E6935E000A04B0A /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
 		AD60B27EDF0D7C4AADFFFFA4 /* libPods-JXFilePreviewDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JXFilePreviewDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFEA0F0FF083030884F197D3 /* libPods-JXFilePreviewViewController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JXFilePreviewViewController.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCCE64F1CBD4808642D66E0A /* Pods-JXFilePreviewViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JXFilePreviewViewController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JXFilePreviewViewController/Pods-JXFilePreviewViewController.debug.xcconfig"; sourceTree = "<group>"; };
@@ -116,6 +117,7 @@
 		64A937491E6829C4007297AA /* JXFilePreviewViewController */ = {
 			isa = PBXGroup;
 			children = (
+				64AA0DEF1E6935E000A04B0A /* Image.xcassets */,
 				64A9374A1E6829C4007297AA /* JXFilePreviewViewController.h */,
 				64A9374B1E6829C4007297AA /* JXFilePreviewViewController.m */,
 				64A937531E682B0D007297AA /* JXFileDownloadView.h */,
