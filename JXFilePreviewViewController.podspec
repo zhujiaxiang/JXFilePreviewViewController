@@ -8,26 +8,21 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = "HJShareMenu"
+  s.name             = "JXFilePreviewViewController"
   s.version          = "0.1.0"
-  s.summary          = "A Share Menu"
-  s.homepage         = "https://github.com/jiehu5114/HJShareMenu"
+  s.summary          = "AFilePreview"
+  s.homepage         = "https://github.com/zhujiaxiang/JXFilePreviewViewController"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
-  s.author           = { "hujie" => "jiehu5114@qq.com" }
-  s.source           = { :git => "https://github.com/jiehu5114/HJShareMenu.git", :tag => s.version.to_s }
-  s.social_media_url = 'http://jiehu5114.gitcafe.io/blog/archives/'
+  s.author           = { "朱佳翔" => "zjxbaozoudhm@gmail.com" }
+  s.source           = { :git => "https://github.com/zhujiaxiang/JXFilePreviewViewController.git", :tag => s.version.to_s }
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
 
+  s.source_files  = "JXFilePreviewViewController/**/*.{h,m}"
+  s.public_header_files = "JXFilePreviewViewController/**/*.h"
+  s.resources = "JXFilePreviewViewController/Image.xcassets/**/*.png"
 
-  s.source_files = 'HJShareMenu'
-  s.public_header_files = 'HJShareMenu/**/*.h'
-  s.resources = 'HJShareMenu/Resources/HJShareMenu.bundle','HJShareMenu/Resources/*.lproj'
-
-
-
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'Masonry', '~> 1.0.0'
 end
