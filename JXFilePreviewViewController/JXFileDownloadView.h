@@ -18,7 +18,6 @@
 
 - (void)jx_fileDownloadView:(JXFileDownloadView *)downloadView didTappedDownloadButton:(UIButton *)downloadButton;
 
-
 @end
 
 @interface JXFileDownloadView : UIView

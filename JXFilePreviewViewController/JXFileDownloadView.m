@@ -21,7 +21,7 @@
         
         self.extensionView = ({
             
-            UIImageView *view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_file_unknown"]];
+            UIImageView *view = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon_file_unknown"]];
             
             [self addSubview:view];
             
