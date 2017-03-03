@@ -7,7 +7,7 @@ This Project is used to download files and review them with one line of code!
 
 ### CocoaPods (recommended)
 
-HJShareMenu is available through [CocoaPods](http://cocoapods.org). To install
+JXFilePreviewViewController is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your [Podfile](http://cocoapods.org/#get_started) and run `pod install`.
 
 ```ruby
