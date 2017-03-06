@@ -15,6 +15,8 @@ This Project is used to download files and review them with one line of code!
 
 6.change percentage from   .2f to int
 
+7.3lvs of  totalBytesExpectedToWrite
+
 ## Installation
 
 [CocoaPods](http://cocoapods.org) is the recommended way of installation, as this avoids including any binary files into your project.
