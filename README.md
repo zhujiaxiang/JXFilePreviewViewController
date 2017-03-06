@@ -12,6 +12,9 @@ This Project is used to download files and review them with one line of code!
 
 5.naming conventions
 
+
+6.change percentage from   .2f to int
+
 ## Installation
 
 [CocoaPods](http://cocoapods.org) is the recommended way of installation, as this avoids including any binary files into your project.
