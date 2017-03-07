@@ -52,6 +52,10 @@
 @property(nonnull, nonatomic, strong) UILabel *label;
 @property(nonnull, nonatomic, strong) JXFileDownloadView *downloadView;
 @property(nonatomic, assign) BOOL isDownloading;
+@property(nonatomic, strong) NSTimer *timer;
+@property(nonatomic, assign) float totalBytesWritten;
+@property(nonatomic, assign) float totalBytesExpectedToWrite;
+
 
 @end
 
@@ -87,6 +91,22 @@
 }
 
 #pragma mark - View Lifecycle
+
+#pragma mark - Private APIs
+
+- (void)calProgress
+{
+    float progress = (float)self.totalBytesWritten / self.totalBytesExpectedToWrite;
+    NSLog(@" %@ ,progress = %f", [NSThread currentThread], progress);
+    self.downloadView.progressView.progressValue = progress;
+    if (self.totalBytesExpectedToWrite > 1000 && self.totalBytesExpectedToWrite < 1000000) {
+        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.2f kb/%.2f kb", progress * 100, (float)self.totalBytesWritten / 1000, (float)self.totalBytesExpectedToWrite / 1000];
+    } else if (self.totalBytesExpectedToWrite > 1000000) {
+        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.2f mb/%.2f mb", progress * 100, (float)self.totalBytesWritten / 1000000, (float)self.totalBytesExpectedToWrite / 1000000];
+    } else {
+        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.2f b/%.2f b", progress * 100, (float)self.totalBytesWritten, (float)self.totalBytesExpectedToWrite];
+    }
+}
 
 - (void)viewDidLoad
 {
