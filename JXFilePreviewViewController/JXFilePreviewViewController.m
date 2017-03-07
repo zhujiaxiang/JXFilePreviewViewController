@@ -163,13 +163,12 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (url.absoluteString == self.webFileURL.absoluteString) {
-            float progress = (float)totalBytesWritten / totalBytesExpectedToWrite;
-            NSLog(@" %@ ,progress = %f", [NSThread currentThread], progress);
-            
-            self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.2f %%  %.2f mb/%.2f mb", progress * 100, (float)totalBytesWritten / 1000000, (float)totalBytesExpectedToWrite / 1000000];
-            
-            self.downloadView.progressView.progressValue = progress;
-            
+            self.totalBytesWritten = (float)totalBytesWritten;
+            self.totalBytesExpectedToWrite = (float)totalBytesExpectedToWrite;
+            if (!self.timer) {
+                self.timer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(calProgress) userInfo:nil repeats:YES];
+                [self.timer fire];
+            }
             
         } else {
             
@@ -178,16 +177,29 @@
             self.downloadView.progressLabel.text = @"另一个文件正在下载中，请稍等";
         }
     });
+    
+    if (totalBytesWritten == totalBytesExpectedToWrite) {
+        [self.timer invalidate];
+    }
+
 }
 
 - (void)jx_fileDownloader:(JXFileDownloader *)JXFileDownloader didFinishedDownloadingFromWebURL:(NSURL *)url ToURL:(NSURL *)location
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self calProgress];
+    });
      if (url.absoluteString == self.webFileURL.absoluteString){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.localFileURL = location;
-            [self reloadData];
-            [self.downloadView removeFromSuperview];
-        });
+         dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 /*延迟执行时间*/ * NSEC_PER_SEC));
+         
+         dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+             
+             self.localFileURL = location;
+             
+             [self reloadData];
+             [self.downloadView removeFromSuperview];
+             [self.timer invalidate];
+         });
         
     } else {
         [JXFileDownloader diskFileExistsWithWebURL:self.webFileURL
