@@ -13,7 +13,6 @@ static NSString *const kDefaultNamespace = @"com.shenji.JXFileCache";
 
 @interface JXFileDownloader () <NSURLSessionTaskDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate,JXFileDownloaderDelegate>
 
-@property(nonatomic, copy) JXFileDownloadCompletionBlock completedBlock;
 typedef void (^KLCheckCacheCompletionBlock)(NSURL *__nullable localFileURL);
 
 @property(nonatomic, strong) NSMutableData *fileData;
@@ -41,7 +40,7 @@ dispatch_queue_t ioQueue()
     static dispatch_queue_t ioQueue;
     
     dispatch_once(&once, ^{
-        ioQueue = dispatch_queue_create("net.sheji.SJFilePreview.io", DISPATCH_QUEUE_SERIAL);
+        ioQueue = dispatch_queue_create("dom.zjx.JXFilePreview.io", DISPATCH_QUEUE_SERIAL);
         
     });
     
@@ -57,7 +56,7 @@ dispatch_queue_t ioQueue()
     return self;
 }
 
-- (void)downloadFileWithURL:(nonnull NSURL *)fileURL completed:(nonnull JXFileDownloadCompletionBlock)completedBlock
+- (void)downloadFileWithURL:(nonnull NSURL *)fileURL
 {
     if (self.isDownloading == NO) {
         self.isDownloading = YES;
@@ -68,7 +67,6 @@ dispatch_queue_t ioQueue()
         
         self.fileURL = fileURL;
         
-        self.completedBlock = completedBlock;
         
         NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:fileURL];
         
@@ -98,18 +96,12 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     if (fileData) {
         
         localFileURL = [[JXFileCache sharedCache] storeLocalFileURLByFullNamespace:kDefaultNamespace URL:self.fileURL contents:fileData attributes:nil];
-        !self.completedBlock ?: self.completedBlock(localFileURL, nil);
+
         self.isDownloading = NO;
-        if ([self.delegate respondsToSelector:@selector(jx_fileDownloader:didFinishedDownloadingFromWebURL:ToURL:)]) {
-            [self.delegate jx_fileDownloader:self didFinishedDownloadingFromWebURL:self.fileURL ToURL:localFileURL];
+        if ([self.delegate respondsToSelector:@selector(jx_fileDownloader:didFinishedDownloadingFromURL:toURL:)]) {
+            [self.delegate jx_fileDownloader:self didFinishedDownloadingFromURL:self.fileURL toURL:localFileURL];
         }
     }
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
-didCompleteWithError:(nullable NSError *)error
-{
-    !self.completedBlock ?: self.completedBlock(nil, error);
 }
 
 - (void)diskFileExistsWithWebURL:(nonnull NSURL *)webURL completed:(JXCheckCacheCompletionBlock)completedBlock

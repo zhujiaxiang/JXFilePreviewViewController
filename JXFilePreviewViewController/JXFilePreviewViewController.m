@@ -55,11 +55,14 @@
 @property(nonatomic, strong) NSTimer *timer;
 @property(nonatomic, assign) float totalBytesWritten;
 @property(nonatomic, assign) float totalBytesExpectedToWrite;
-
+@property(nonatomic, assign) JXNetworkReachabilityStatus status;
+@property(nonatomic, assign) BOOL allowWWAN;
 
 @end
 
 @implementation JXFilePreviewViewController
+
+@synthesize delegate = _delegate;
 
 #pragma mark - Init
 
@@ -92,25 +95,13 @@
 
 #pragma mark - View Lifecycle
 
-#pragma mark - Private APIs
-
-- (void)calProgress
-{
-    float progress = (float)self.totalBytesWritten / self.totalBytesExpectedToWrite;
-    NSLog(@" %@ ,progress = %f", [NSThread currentThread], progress);
-    self.downloadView.progressView.progressValue = progress;
-    if (self.totalBytesExpectedToWrite > 1000 && self.totalBytesExpectedToWrite < 1000000) {
-        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.2f kb/%.2f kb", progress * 100, (float)self.totalBytesWritten / 1000, (float)self.totalBytesExpectedToWrite / 1000];
-    } else if (self.totalBytesExpectedToWrite > 1000000) {
-        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.2f mb/%.2f mb", progress * 100, (float)self.totalBytesWritten / 1000000, (float)self.totalBytesExpectedToWrite / 1000000];
-    } else {
-        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.2f b/%.2f b", progress * 100, (float)self.totalBytesWritten, (float)self.totalBytesExpectedToWrite];
-    }
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if ([self.delegate respondsToSelector:@selector(jx_statusReachabilityOfPreviewViewController:)]) {
+        self.status = [self.delegate jx_statusReachabilityOfPreviewViewController:self];
+    }
     
     self.downloadView.fileTitleLabel.text = self.fileTitle;
     
@@ -123,18 +114,61 @@
                                                                 self.localFileURL = localFileURL;
                                                                 [self reloadData];
                                                             } else {
-                                                                
-                                                                [self.view addSubview:self.downloadView];
-                                                                [[JXFileDownloader sharedDownloader] downloadFileWithURL:_webFileURL
-                                                                                                               completed:^(NSURL *_Nullable localFileURL, NSError *_Nullable error) {
-                                                                                                                   NSLog(@"%@", localFileURL);
-                                                                                                                   if (localFileURL) {
-                                                                                                                       self.localFileURL = localFileURL;
-                                                                                                                   }
-                                                                                                               }];
+                                                                if (self.status == JXNetworkReachabilityStatusReachableViaWiFi) {
+                                                                    [self.view addSubview:self.downloadView];
+                                                                    [[JXFileDownloader sharedDownloader] downloadFileWithURL:_webFileURL];
+                                                                } else if (self.status == JXNetworkReachabilityStatusReachableViaWWAN) {
+                                                                    [self.view addSubview:self.downloadView];
+                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"您当前网络环境为2G/3G/4G,下载文件将消耗您的流量，您要继续吗？" preferredStyle:UIAlertControllerStyleAlert];
+                                                                    
+                                                                    // 添加按钮
+                                                                    [alert addAction:[UIAlertAction actionWithTitle:@"确定"
+                                                                                                              style:UIAlertActionStyleDestructive
+                                                                                                            handler:^(UIAlertAction *action) {
+//                                                                                                                [self.view addSubview:self.downloadView];
+                                                                                                                [[JXFileDownloader sharedDownloader] downloadFileWithURL:_webFileURL];
+                                                                                                                self.allowWWAN = YES;
+                                                                                                            }]];
+                                                                    [alert addAction:[UIAlertAction actionWithTitle:@"取消"
+                                                                                                              style:UIAlertActionStyleCancel
+                                                                                                            handler:^(UIAlertAction *action) {
+                                                                                                                [self.navigationController popViewControllerAnimated:NO];
+                                                                                                                self.allowWWAN = NO;
+                                                                                                            }]];
+                                                                    
+                                                                    [self presentViewController:alert animated:YES completion:nil];
+                                                                } else {
+                                                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"无网络，不可操作！" preferredStyle:UIAlertControllerStyleAlert];
+                                                                    
+                                                                    // 添加按钮
+                                                                    [alert addAction:[UIAlertAction actionWithTitle:@"确定"
+                                                                                                              style:UIAlertActionStyleDestructive
+                                                                                                            handler:^(UIAlertAction *action) {
+                                                                                                                [self.navigationController popViewControllerAnimated:NO];
+                                                                                                            }]];
+                                                                    
+                                                                    [self presentViewController:alert animated:YES completion:nil];
+                                                                }
                                                             }
                                                         }];
 }
+
+#pragma mark - Private APIs
+
+- (void)calProgress
+{
+    float progress = (float)self.totalBytesWritten / self.totalBytesExpectedToWrite;
+    NSLog(@" %@ ,progress = %f", [NSThread currentThread], progress);
+    self.downloadView.progressView.progressValue = progress;
+    if (self.totalBytesExpectedToWrite > 1000 && self.totalBytesExpectedToWrite < 1000000) {
+        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.1f kb/%.1f kb", progress * 100, (float)self.totalBytesWritten / 1000, (float)self.totalBytesExpectedToWrite / 1000];
+    } else if (self.totalBytesExpectedToWrite > 1000000) {
+        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.1f mb/%.1f mb", progress * 100, (float)self.totalBytesWritten / 1000000, (float)self.totalBytesExpectedToWrite / 1000000];
+    } else {
+        self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.1f b/%.1f b", progress * 100, (float)self.totalBytesWritten, (float)self.totalBytesExpectedToWrite];
+    }
+}
+
 
 #pragma mark - JXFileDownloadViewDelegate
 
@@ -165,10 +199,7 @@
         if (url.absoluteString == self.webFileURL.absoluteString) {
             self.totalBytesWritten = (float)totalBytesWritten;
             self.totalBytesExpectedToWrite = (float)totalBytesExpectedToWrite;
-            if (!self.timer) {
-                self.timer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(calProgress) userInfo:nil repeats:YES];
-                [self.timer fire];
-            }
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(calProgress) userInfo:nil repeats:NO];
             
         } else {
             
@@ -184,25 +215,21 @@
 
 }
 
-- (void)jx_fileDownloader:(JXFileDownloader *)JXFileDownloader didFinishedDownloadingFromWebURL:(NSURL *)url ToURL:(NSURL *)location
+- (void)jx_fileDownloader:(JXFileDownloader *)fileDownloader didFinishedDownloadingFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self calProgress];
-    });
-     if (url.absoluteString == self.webFileURL.absoluteString){
-         dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 /*延迟执行时间*/ * NSEC_PER_SEC));
+     if (fromURL.absoluteString == self.webFileURL.absoluteString){
+         dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 /*延迟执行时间*/ * NSEC_PER_SEC));
          
          dispatch_after(delayTime, dispatch_get_main_queue(), ^{
              
-             self.localFileURL = location;
+             self.localFileURL = toURL;
              
              [self reloadData];
              [self.downloadView removeFromSuperview];
-             [self.timer invalidate];
          });
         
     } else {
-        [JXFileDownloader diskFileExistsWithWebURL:self.webFileURL
+        [fileDownloader diskFileExistsWithWebURL:self.webFileURL
                                          completed:^(NSURL *_Nullable localFileURL) {
                                              if (localFileURL) {
                                                  // 已离线缓存，直接预览
@@ -210,12 +237,8 @@
                                                  [self reloadData];
                                              } else {
                                                  
-                                                 [JXFileDownloader downloadFileWithURL:_webFileURL
-                                                                             completed:^(NSURL *_Nullable localFileURL, NSError *_Nullable error) {
-                                                                                 NSLog(@"%@", localFileURL);
-                                                                                 if (localFileURL) {
-                                                                                 }
-                                                                             }];
+                                                 [fileDownloader downloadFileWithURL:_webFileURL
+               ];
                                              }
                                          }];
     }

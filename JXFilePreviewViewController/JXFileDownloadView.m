@@ -77,7 +77,7 @@
         self.progressLabel = ({
             
             UILabel *view = [[UILabel alloc] init];
-            
+            view.text = @"0%  0b/0b";
             [self addSubview:view];
             
             [view mas_makeConstraints:^(MASConstraintMaker *make) {
