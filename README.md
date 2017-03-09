@@ -1,21 +1,13 @@
 # JXFilePreviewViewController
-This Project is used to download files and review them with one line of code!
+This rookie's Project is used to download files and review them with one line of code (sadly,now more...)!
 ## TODO
+1.Allow download more files during a period of time（****）
 
-1.wait for one sec after download
+2.Defensive programming （***）
 
-2.set time interval for download progressview refresh
+3.Localization（**）
 
-3.initialize progressview and set 0  before download is in progress
-
-4.processing method about 3G/4G/WIFI
-
-5.naming conventions
-
-
-6.change percentage from   .2f to int
-
-7.3lvs of  totalBytesExpectedToWrite
+4.Beautify （watching [shejidaren](http://www.shejidaren.com/100-free-loading-progress-bar-psd-downloads.html) && [Dribbble](https://dribbble.com)   ） （**）
 
 ## Installation
 
