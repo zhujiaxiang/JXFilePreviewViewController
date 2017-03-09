@@ -187,7 +187,7 @@ static NSString *const kDefaultDirPath = @"com.zjx.JXFileCache";
 {
     NSURL *url = [NSURL URLWithString:@"http://www.neegle.net/kunlunMedia/upload/201708/a494d97e-7967-4e9a-b445-05c9152a4d78.zip"];
     JXFilePreviewViewController *vc = [[JXFilePreviewViewController alloc] initWithFileURL:url fileTitle:@"testZip"];
-    vc.jxdelegate = self;
+    vc.jx_delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -195,7 +195,7 @@ static NSString *const kDefaultDirPath = @"com.zjx.JXFileCache";
 {
     NSURL *url = [NSURL URLWithString:@"http://www.neegle.net/kunlunMedia/upload/201709/5d5b7229-96a2-446b-a8bf-ae2cfccf6362.xlsx"];
     JXFilePreviewViewController *vc = [[JXFilePreviewViewController alloc] initWithFileURL:url fileTitle:@"testExcel"];
-    vc.jxdelegate = self;
+    vc.jx_delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -203,7 +203,7 @@ static NSString *const kDefaultDirPath = @"com.zjx.JXFileCache";
 {
     NSURL *url = [NSURL URLWithString:@"http://www.neegle.net/kunlunMedia/upload/201709/3a906b1a-5a6a-4264-9d15-65e0e82e2310.pdf"];
     JXFilePreviewViewController *vc = [[JXFilePreviewViewController alloc] initWithFileURL:url fileTitle:@"testPdf"];
-    vc.jxdelegate = self;
+    vc.jx_delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -211,7 +211,7 @@ static NSString *const kDefaultDirPath = @"com.zjx.JXFileCache";
 {
     NSURL *url = [NSURL URLWithString:@"http://www.neegle.net/kunlunMedia/upload/201709/6b8d6830-d55d-4a4c-9a5f-98be1c195f23.ppt"];
     JXFilePreviewViewController *vc = [[JXFilePreviewViewController alloc] initWithFileURL:url fileTitle:@"testPpt"];
-    vc.jxdelegate = self;
+    vc.jx_delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -219,7 +219,7 @@ static NSString *const kDefaultDirPath = @"com.zjx.JXFileCache";
 {
     NSURL *url = [NSURL URLWithString:@"http://www.neegle.net/kunlunMedia/upload/201709/bf5e2a8c-60ef-4907-bb40-b11ab841d495.docx"];
     JXFilePreviewViewController *vc = [[JXFilePreviewViewController alloc] initWithFileURL:url fileTitle:@"testWord"];
-    vc.jxdelegate = self;
+    vc.jx_delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -227,7 +227,7 @@ static NSString *const kDefaultDirPath = @"com.zjx.JXFileCache";
 {
     NSURL *url = [NSURL URLWithString:@"http://www.neegle.net/kunlunMedia/upload/201709/eb8ce21a-1f19-40e4-a237-f1c2f48f1254.txt"];
     JXFilePreviewViewController *vc = [[JXFilePreviewViewController alloc] initWithFileURL:url fileTitle:@"testTxt"];
-    vc.jxdelegate = self;
+    vc.jx_delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

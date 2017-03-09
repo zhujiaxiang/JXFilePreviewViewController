@@ -97,8 +97,8 @@
 {
     [super viewDidLoad];
 
-    if ([self.jxdelegate respondsToSelector:@selector(jx_statusReachabilityOfPreviewViewController:)]) {
-        self.status = [self.jxdelegate jx_statusReachabilityOfPreviewViewController:self];
+    if ([self.jx_delegate respondsToSelector:@selector(jx_statusReachabilityOfPreviewViewController:)]) {
+        self.status = [self.jx_delegate jx_statusReachabilityOfPreviewViewController:self];
     }
 
     self.downloadView.fileTitleLabel.text = self.fileTitle;

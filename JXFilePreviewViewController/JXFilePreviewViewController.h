@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, JXNetworkReachabilityStatus) {
 
 @interface JXFilePreviewViewController : QLPreviewController
 
-@property(nonatomic, weak, nullable) id<JXFilePreviewViewControllerDelegate> jxdelegate;
+@property(nonatomic, weak, nullable) id<JXFilePreviewViewControllerDelegate> jx_delegate;
 
 - (nullable instancetype)initWithFileURL:(nullable NSURL *)fileURL fileTitle:(nullable NSString *)fileTitle;
 
