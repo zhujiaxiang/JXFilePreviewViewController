@@ -43,7 +43,6 @@
 
 @end
 
-
 @interface JXFilePreviewViewController () <QLPreviewControllerDelegate, QLPreviewControllerDataSource, JXFileDownloadViewDelegate, JXFileDownloaderDelegate>
 
 @property(nonnull, nonatomic, copy) NSURL *webFileURL;
@@ -62,8 +61,6 @@
 
 @implementation JXFilePreviewViewController
 
-@synthesize delegate = _delegate;
-
 #pragma mark - Init
 
 - (instancetype)initWithFileURL:(NSURL *)fileURL fileTitle:(NSString *)fileTitle
@@ -76,7 +73,7 @@
             self.downloadView.extensionView.image = [UIImage imageNamed:@"icon_file_word"];
         } else if ([fileURL.pathExtension isEqualToString:@"xls"] || [fileURL.pathExtension isEqualToString:@"xlsx"]) {
             self.downloadView.extensionView.image = [UIImage imageNamed:@"icon_file_excel"];
-            
+
         } else if ([fileURL.pathExtension isEqualToString:@"ppt"] || [fileURL.pathExtension isEqualToString:@"pptx"]) {
             self.downloadView.extensionView.image = [UIImage imageNamed:@"icon_file_ppt"];
         } else if ([fileURL.pathExtension isEqualToString:@"pdf"]) {
@@ -87,9 +84,10 @@
             self.downloadView.extensionView.image = [UIImage imageNamed:@"icon_file_unknown"];
         }
     }
-    
+
     self.dataSource = self;
     self.delegate = self;
+
     return self;
 }
 
@@ -98,15 +96,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    if ([self.delegate respondsToSelector:@selector(jx_statusReachabilityOfPreviewViewController:)]) {
-        self.status = [self.delegate jx_statusReachabilityOfPreviewViewController:self];
+
+    if ([self.jxdelegate respondsToSelector:@selector(jx_statusReachabilityOfPreviewViewController:)]) {
+        self.status = [self.jxdelegate jx_statusReachabilityOfPreviewViewController:self];
     }
-    
+
     self.downloadView.fileTitleLabel.text = self.fileTitle;
-    
+
     [JXFileDownloader sharedDownloader].delegate = self;
-    
+
     [[JXFileDownloader sharedDownloader] diskFileExistsWithWebURL:self.webFileURL
                                                         completed:^(NSURL *_Nullable localFileURL) {
                                                             if (localFileURL) {
@@ -120,12 +118,12 @@
                                                                 } else if (self.status == JXNetworkReachabilityStatusReachableViaWWAN) {
                                                                     [self.view addSubview:self.downloadView];
                                                                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"您当前网络环境为2G/3G/4G,下载文件将消耗您的流量，您要继续吗？" preferredStyle:UIAlertControllerStyleAlert];
-                                                                    
+
                                                                     // 添加按钮
                                                                     [alert addAction:[UIAlertAction actionWithTitle:@"确定"
                                                                                                               style:UIAlertActionStyleDestructive
                                                                                                             handler:^(UIAlertAction *action) {
-//                                                                                                                [self.view addSubview:self.downloadView];
+                                                                                                                //                                                                                                                [self.view addSubview:self.downloadView];
                                                                                                                 [[JXFileDownloader sharedDownloader] downloadFileWithURL:_webFileURL];
                                                                                                                 self.allowWWAN = YES;
                                                                                                             }]];
@@ -135,18 +133,18 @@
                                                                                                                 [self.navigationController popViewControllerAnimated:NO];
                                                                                                                 self.allowWWAN = NO;
                                                                                                             }]];
-                                                                    
+
                                                                     [self presentViewController:alert animated:YES completion:nil];
                                                                 } else {
                                                                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"警告" message:@"无网络，不可操作！" preferredStyle:UIAlertControllerStyleAlert];
-                                                                    
+
                                                                     // 添加按钮
                                                                     [alert addAction:[UIAlertAction actionWithTitle:@"确定"
                                                                                                               style:UIAlertActionStyleDestructive
                                                                                                             handler:^(UIAlertAction *action) {
                                                                                                                 [self.navigationController popViewControllerAnimated:NO];
                                                                                                             }]];
-                                                                    
+
                                                                     [self presentViewController:alert animated:YES completion:nil];
                                                                 }
                                                             }
@@ -168,7 +166,6 @@
         self.downloadView.progressLabel.text = [NSString stringWithFormat:@"%.f %%  %.1f b/%.1f b", progress * 100, (float)self.totalBytesWritten, (float)self.totalBytesExpectedToWrite];
     }
 }
-
 
 #pragma mark - JXFileDownloadViewDelegate
 
@@ -200,47 +197,45 @@
             self.totalBytesWritten = (float)totalBytesWritten;
             self.totalBytesExpectedToWrite = (float)totalBytesExpectedToWrite;
             self.timer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(calProgress) userInfo:nil repeats:NO];
-            
+
         } else {
-            
+
             NSLog(@"%@", url.absoluteString);
             NSLog(@"%@", self.webFileURL.absoluteString);
             self.downloadView.progressLabel.text = @"另一个文件正在下载中，请稍等";
         }
     });
-    
+
     if (totalBytesWritten == totalBytesExpectedToWrite) {
         [self.timer invalidate];
     }
-
 }
 
 - (void)jx_fileDownloader:(JXFileDownloader *)fileDownloader didFinishedDownloadingFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL
 {
-     if (fromURL.absoluteString == self.webFileURL.absoluteString){
-         dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 /*延迟执行时间*/ * NSEC_PER_SEC));
-         
-         dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-             
-             self.localFileURL = toURL;
-             
-             [self reloadData];
-             [self.downloadView removeFromSuperview];
-         });
-        
+    if (fromURL.absoluteString == self.webFileURL.absoluteString) {
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 /*延迟执行时间*/ * NSEC_PER_SEC));
+
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+
+            self.localFileURL = toURL;
+
+            [self reloadData];
+            [self.downloadView removeFromSuperview];
+        });
+
     } else {
         [fileDownloader diskFileExistsWithWebURL:self.webFileURL
-                                         completed:^(NSURL *_Nullable localFileURL) {
-                                             if (localFileURL) {
-                                                 // 已离线缓存，直接预览
-                                                 self.localFileURL = localFileURL;
-                                                 [self reloadData];
-                                             } else {
-                                                 
-                                                 [fileDownloader downloadFileWithURL:_webFileURL
-               ];
-                                             }
-                                         }];
+                                       completed:^(NSURL *_Nullable localFileURL) {
+                                           if (localFileURL) {
+                                               // 已离线缓存，直接预览
+                                               self.localFileURL = localFileURL;
+                                               [self reloadData];
+                                           } else {
+
+                                               [fileDownloader downloadFileWithURL:_webFileURL];
+                                           }
+                                       }];
     }
 }
 @end

@@ -38,9 +38,9 @@ static NSString *const kDefaultNamespace = @"com.zjx.JXFileCache";
     unsigned char r[16];
     CC_MD5(str, (CC_LONG)strlen(str), r);
     NSString *filename = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%@",
-                          r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10],
-                          r[11], r[12], r[13], r[14], r[15], [key.pathExtension isEqualToString:@""] ? @"" : [NSString stringWithFormat:@".%@", key.pathExtension]];
-    
+                                                    r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10],
+                                                    r[11], r[12], r[13], r[14], r[15], [key.pathExtension isEqualToString:@""] ? @"" : [NSString stringWithFormat:@".%@", key.pathExtension]];
+
     return filename;
 }
 
@@ -49,16 +49,16 @@ static NSString *const kDefaultNamespace = @"com.zjx.JXFileCache";
     NSURL *localFileURL = nil;
     //构建缓存目录
     NSString *dirPath = nil;
-    
+
     if (fullNamespace) {
         dirPath = [self makeDiskCachePath:fullNamespace];
     } else {
-         dirPath = [self makeDiskCachePath:[NSBundle mainBundle].bundleIdentifier];
+        dirPath = [self makeDiskCachePath:[NSBundle mainBundle].bundleIdentifier];
     }
-    
+
     //构建缓存文件的路径
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", dirPath, [self cachedFileNameForKey:url.absoluteString]];
-    
+
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![fm fileExistsAtPath:dirPath]) {
         [fm createDirectoryAtPath:dirPath withIntermediateDirectories:YES attributes:attr error:NULL];
@@ -69,7 +69,7 @@ static NSString *const kDefaultNamespace = @"com.zjx.JXFileCache";
     if (createFileSuccess) {
         localFileURL = [NSURL fileURLWithPath:filePath];
     }
-    
+
     return localFileURL;
 }
 
@@ -77,25 +77,25 @@ static NSString *const kDefaultNamespace = @"com.zjx.JXFileCache";
 {
     NSString *dirPath = [self makeDiskCachePath:kDefaultNamespace];
     NSString *filePath = [NSString stringWithFormat:@"%@/%@", dirPath, [self cachedFileNameForKey:url.absoluteString]];
-    
+
     return filePath;
 }
 
 - (void)clearAllCaches
 {
     NSFileManager *fm = [NSFileManager defaultManager];
-    
+
     NSString *dirPathStr = nil;
-    
+
     if (kDefaultNamespace) {
         dirPathStr = [self makeDiskCachePath:kDefaultNamespace];
     } else {
         dirPathStr = [self makeDiskCachePath:[NSBundle mainBundle].bundleIdentifier];
     }
-    
+
     if ([fm fileExistsAtPath:dirPathStr]) {
         BOOL success = [fm removeItemAtPath:dirPathStr error:nil];
-        
+
         NSLog(@"%i",success);
     }
 }

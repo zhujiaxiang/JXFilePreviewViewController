@@ -14,33 +14,31 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.progressBackgroundView = ({
-            
+
             UIView *view = [[UIView alloc] init];
             view.backgroundColor = [UIColor lightGrayColor];
             view.layer.masksToBounds = YES;
             view.layer.cornerRadius = self.progressCornerRadius;
-            
+
             [self addSubview:view];
-            
+
             view;
         });
-        
+
         self.progressView = ({
-            
+
             UIView *view = [[UIView alloc] init];
             view.backgroundColor = [UIColor colorWithRed:0.37 green:0.82 blue:0.26 alpha:1];
             view.layer.masksToBounds = YES;
             view.layer.cornerRadius = self.progressCornerRadius;
-            
+
             [self.progressBackgroundView addSubview:view];
-            
+
             view;
         });
     }
     return self;
 }
-
-
 
 - (void)setProgressValue:(CGFloat)progressValue
 {

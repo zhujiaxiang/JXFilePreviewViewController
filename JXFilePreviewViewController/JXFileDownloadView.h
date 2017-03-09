@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "JXProgressView.h"
 
-
 @class JXFileDownloadView;
 
 @protocol JXFileDownloadViewDelegate <NSObject>

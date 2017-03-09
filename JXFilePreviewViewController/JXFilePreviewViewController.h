@@ -9,8 +9,8 @@
 #import <QuickLook/QuickLook.h>
 
 typedef NS_ENUM(NSInteger, JXNetworkReachabilityStatus) {
-    JXNetworkReachabilityStatusUnknown          = -1,
-    JXNetworkReachabilityStatusNotReachable     = 0,
+    JXNetworkReachabilityStatusUnknown = -1,
+    JXNetworkReachabilityStatusNotReachable = 0,
     JXNetworkReachabilityStatusReachableViaWWAN = 1,
     JXNetworkReachabilityStatusReachableViaWiFi = 2
 };
@@ -27,8 +27,7 @@ typedef NS_ENUM(NSInteger, JXNetworkReachabilityStatus) {
 
 @interface JXFilePreviewViewController : QLPreviewController
 
-@property(nonatomic, weak,nullable) id< JXFilePreviewViewControllerDelegate> delegate;
-
+@property(nonatomic, weak, nullable) id<JXFilePreviewViewControllerDelegate> jxdelegate;
 
 - (nullable instancetype)initWithFileURL:(nullable NSURL *)fileURL fileTitle:(nullable NSString *)fileTitle;
 

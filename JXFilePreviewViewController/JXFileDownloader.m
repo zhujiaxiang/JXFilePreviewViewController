@@ -11,7 +11,7 @@
 
 static NSString *const kDefaultNamespace = @"com.shenji.JXFileCache";
 
-@interface JXFileDownloader () <NSURLSessionTaskDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate,JXFileDownloaderDelegate>
+@interface JXFileDownloader () <NSURLSessionTaskDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate, JXFileDownloaderDelegate>
 
 typedef void (^KLCheckCacheCompletionBlock)(NSURL *__nullable localFileURL);
 
@@ -38,15 +38,14 @@ dispatch_queue_t ioQueue()
 {
     static dispatch_once_t once;
     static dispatch_queue_t ioQueue;
-    
+
     dispatch_once(&once, ^{
         ioQueue = dispatch_queue_create("dom.zjx.JXFilePreview.io", DISPATCH_QUEUE_SERIAL);
-        
+
     });
-    
+
     return ioQueue;
 }
-
 
 - (instancetype)init
 {
@@ -64,23 +63,21 @@ dispatch_queue_t ioQueue()
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
                                                               delegate:self
                                                          delegateQueue:nil];
-        
+
         self.fileURL = fileURL;
-        
-        
+
         NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:fileURL];
-        
+
         [downloadTask resume];
     }
-    
 }
 #pragma mark - NSURLSessionDataDelegate
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
-      didWriteData:(int64_t)bytesWritten
- totalBytesWritten:(int64_t)totalBytesWritten
-totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+                 didWriteData:(int64_t)bytesWritten
+            totalBytesWritten:(int64_t)totalBytesWritten
+    totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
-    
+
     NSLog(@"%lf", 1.0 * totalBytesWritten / totalBytesExpectedToWrite);
     if ([self.delegate respondsToSelector:@selector(jx_fileDownloader:totalBytesWritten:totalBytesExpectedToWrite:WebURL:)]) {
         [self.delegate jx_fileDownloader:self totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite WebURL:self.fileURL];
@@ -89,12 +86,12 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
-    
+
     NSURL *localFileURL = nil;
     NSData *fileData = [NSData dataWithContentsOfURL:location];
-    
+
     if (fileData) {
-        
+
         localFileURL = [[JXFileCache sharedCache] storeLocalFileURLByFullNamespace:kDefaultNamespace URL:self.fileURL contents:fileData attributes:nil];
 
         self.isDownloading = NO;
@@ -109,7 +106,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
     dispatch_queue_t queue = ioQueue();
 
     dispatch_async(queue, ^{
-        
+
         NSURL *localFileURL = nil;
         NSString *filePath = [[JXFileCache sharedCache] defaultFileCachePathForWebURL:webURL];
         BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];

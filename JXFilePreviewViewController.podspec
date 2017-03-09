@@ -10,7 +10,7 @@
 Pod::Spec.new do |s|
   s.name             = "JXFilePreviewViewController"
   s.version          = "1.0.0"
-  s.summary          = "AFilePreview"
+  s.summary          = "A File Preview"
   s.homepage         = "https://github.com/zhujiaxiang/JXFilePreviewViewController"
   s.license          = 'MIT'
   s.author           = { "朱佳翔" => "zjxbaozoudhm@gmail.com" }
