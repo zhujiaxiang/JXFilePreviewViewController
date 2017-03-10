@@ -1,15 +1,17 @@
 # JXFilePreviewViewController
 This rookie's Project is used to download files and review them with one line of code (sadly,now more...)!
 ## TODO
-1.Allow download more files during a period of time（****）
+1.fix progressLabel shake problem（*****）
 
-2.Defensive programming （***）
+2.Allow download more files during a period of time（****）
 
-3.Pause && Continue （**）
+3.Defensive programming （***）
 
-4.Localization（**）
+4.Pause && Continue （**）
 
-5.Beautify （watching [shejidaren](http://www.shejidaren.com/100-free-loading-progress-bar-psd-downloads.html) && [Dribbble](https://dribbble.com)   ） （**）
+5.Localization（**）
+
+6.Beautify （watching [shejidaren](http://www.shejidaren.com/100-free-loading-progress-bar-psd-downloads.html) && [Dribbble](https://dribbble.com)   ） （**）
 
 ## Installation
 
