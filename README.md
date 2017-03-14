@@ -1,7 +1,7 @@
 # JXFilePreviewViewController
 This rookie's Project is used to download files and review them with one line of code (sadly,now more...)!
 ## TODO
-1.fix progressLabel shake problem（*****）
+1.fix progressLabel shake problem（done）
 
 2.Allow download more files during a period of time（****）
 
