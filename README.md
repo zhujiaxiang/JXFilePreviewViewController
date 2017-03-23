@@ -1,18 +1,9 @@
 # JXFilePreviewViewController
 This rookie's Project is used to download files and review them with one line of code (sadly,now more...)!
 ## TODO
-1.fix progressLabel shake problem（done）
-
-2.Allow download more files during a period of time（****）
-
-3.Defensive programming （***）
-
-4.Pause && Continue （**）
-
-5.Localization（**）
-
-6.Beautify （watching [shejidaren](http://www.shejidaren.com/100-free-loading-progress-bar-psd-downloads.html) && [Dribbble](https://dribbble.com)   ） （**）
-
+1.change from GCD ->operation + GCD
+2.use barrier
+3.datatask | downloadtask
 ## Installation
 
 [CocoaPods](http://cocoapods.org) is the recommended way of installation, as this avoids including any binary files into your project.
